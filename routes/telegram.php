@@ -24,7 +24,7 @@ $bot->onCommand('start', function (Nutgram $bot) {
     $bot->fallbackOn(UpdateTypes::CALLBACK_QUERY, function (Nutgram $bot) {
         $bot->answerCallbackQuery([
             'callback_query_id' => $bot->callbackQuery()->id,
-            'url' => 'https://maxizhukov.github.io/telegram_game_front/',
+            'url' => 'https://kaleidoscope-letters.ru/public/boot',
         ]);
     });
 
