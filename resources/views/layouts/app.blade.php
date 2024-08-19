@@ -16,7 +16,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="header">
+        <div class="header" style="height: 120px;">
             <a href="{{ route('index') }}"><image id="back" width="30" src="{{ asset('assets/images/icons/back-svgrepo-com.svg') }}"/></a>
         </div>
         @yield('content')
