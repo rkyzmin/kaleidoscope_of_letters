@@ -3,12 +3,13 @@
 
 <div class="enter_letters__wrapper">
     @for($i = 0; $i < $rows['count']; $i++)
-    <div class="{{ $rows['class'] }}">
-        @for($j = 0; $j < $rows['items']['count']; $j++)
-        <input type="text" readonly style="{{ $rows['items']['style'] }}"/>
+        <div class="{{ $rows['class'] }}">
+        @for($j = 0; $j
+        < $rows['items']['count']; $j++)
+            <input type="text" readonly style="{{ $rows['items']['style'] }}" />
         @endfor
-    </div>
-    @endfor
+</div>
+@endfor
 </div>
 
 <div class="words_wrapper">
@@ -56,4 +57,11 @@
             </svg></span>
     </div>
 </div>
+@section('script')
+<script>
+    $(document).ready(function() {
+        alert(1231321)
+    });
+</script>
+@endsection
 @endsection
