@@ -116,12 +116,12 @@
 
             if (lengthSuccess === 5) {
                 setTimeout(() => {
-                    window.location.replace("/result");
+                    window.location.replace("/public/result");
                     // localStorage.setItem('result', 'true')
                 }, 1000);
             } else if (rowId === 5) {
                 setTimeout(() => {
-                    window.location.replace("/result");
+                    window.location.replace("/public/result");
                     localStorage.setItem('result', 'false')
                     // window.location.reload();
                 }, 1000);
