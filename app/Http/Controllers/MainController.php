@@ -28,4 +28,9 @@ class MainController extends Controller
     {
         return view('main.settings');
     }
+
+    public function result()
+    {
+        return view('main.result');
+    }
 }

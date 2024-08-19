@@ -13,7 +13,6 @@ $(document).ready(function () {
             items[3].value = e.target.textContent;
         } else if (items[4].value === "") {
             items[4].value = e.target.textContent;
-
         }
 
         if (items[4].value !== "") {
@@ -42,12 +41,30 @@ $(document).ready(function () {
                 }
             });
 
-
+            checkResultItems(row);
         }
     }
 
     function randomIntFromInterval(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function checkResultItems(rowId) {
+
+        let lengthSuccess = document.querySelectorAll('.enter_letters__wrapper__row')[rowId].querySelectorAll('.success').length;
+
+        if (lengthSuccess === 5) {
+            setTimeout(() => {
+                window.location.replace("/result");
+                localStorage.setItem('result', 'true')
+            }, 1000);
+        } else if (rowId === 5) {
+            setTimeout(() => {
+                window.location.replace("/result");
+                localStorage.setItem('result', 'false')
+                // window.location.reload();
+            }, 1000);
+        }
     }
 
     const rndInt = randomIntFromInterval(0, 3);
@@ -75,22 +92,11 @@ $(document).ready(function () {
                     }
                 });
 
-                if (rowId === 5) {
+                if (rowId > 5) {
                     return;
                 }
 
                 checkLetter(e, rowId)
-
-                let lengthSuccess = document.querySelectorAll('.enter_letters__wrapper__row')[rowId].querySelectorAll('.success').length;
-
-                if (lengthSuccess === 5) {
-                    setTimeout(() => {
-                        alert('Win')
-                        window.location.reload();
-                    }, 2000);
-                }
-
-                //console.log(elements); //проверить ряд, если в очередном ряду на последней букве закончилось все, переходим на другой
 
             });
         });
@@ -104,6 +110,15 @@ $(document).ready(function () {
                 item.value = "";
             });
         });
+    }
+
+    let resultGame = document.querySelector('#result_game');
+    if (resultGame) {
+        if (localStorage.getItem('result') === "true") {
+            document.querySelector('#result_game').innerHTML = 'Вы выиграли';
+        } else {
+            document.querySelector('#result_game').innerHTML = 'Вы проиграли';
+        }
     }
 
 });
