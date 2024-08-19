@@ -17,10 +17,7 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            @php
-            $backLink = $_SERVER['HTTP_REFERER'];
-            @endphp
-            <a href="{{ $backLink }}"><image id="back" width="30" src="{{ asset('assets/images/icons/back-svgrepo-com.svg') }}"/></a>
+            <a href="{{ route('index') }}"><image id="back" width="30" src="{{ asset('assets/images/icons/back-svgrepo-com.svg') }}"/></a>
         </div>
         @yield('content')
         <div class="footer"></div>
