@@ -1,3 +1,14 @@
+:root {
+    --content-height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffe1a5;
+}
+
+
 #go_to_game,
 #save_settings {
     background-color: darkorchid;
@@ -30,26 +41,8 @@
     margin-left: 10px;
 }
 
-/* .wrapper_start_page {
-    width: 500px;
-    height: 100vh;
-} */
-
 .wrapper_start_page__main {
     position: relative;
-}
-
-:root {
-    --content-height: 100%;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: auto;
-    display: table;
-    background-color: #ffe1a5;
 }
 
 .header {
@@ -59,11 +52,6 @@
 .footer {
     min-height: 25px;
 }
-
-/* .wrapper_start_page {
-    background-color: #ffe1a5;
-    height: var(--content-height);
-}*/
 
 .settings {
     position: relative;
@@ -85,7 +73,8 @@ svg path {
 }
 
 .words_wrapper {
-    padding: 0 25px;
+    display: table;
+    margin: auto;
 }
 
 .enter_letters__wrapper__row {
@@ -97,7 +86,7 @@ svg path {
 }
 
 .enter_letters__wrapper {
-    margin-top: 25px;
+    margin-bottom: 25px;
     display: table;
     margin: auto;
 }

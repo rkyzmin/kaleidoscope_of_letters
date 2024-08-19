@@ -15,12 +15,10 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="wrapper">
-            <div class="header"></div>
-            @yield('content')
-            <div class="footer"></div>
-        </div>
+    <div class="wrapper">
+        <div class="header"></div>
+        @yield('content')
+        <div class="footer"></div>
     </div>
 
 
