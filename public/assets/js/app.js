@@ -3,8 +3,6 @@ $(document).ready(function () {
     function checkLetter(e, row) {
         let items = document.querySelectorAll('.enter_letters__wrapper__row')[row].querySelectorAll('input');
 
-        alert('govno');
-        
         if (items[0].value === "") {
             items[0].value = e.target.textContent;
         } else if (items[1].value === "") {
@@ -58,12 +56,12 @@ $(document).ready(function () {
         if (lengthSuccess === 5) {
             setTimeout(() => {
                 window.location.replace("/result");
-                localStorage.setItem('result', 'true')
+                // localStorage.setItem('result', 'true')
             }, 1000);
         } else if (rowId === 5) {
             setTimeout(() => {
                 window.location.replace("/result");
-                localStorage.setItem('result', 'false')
+                // localStorage.setItem('result', 'false')
                 // window.location.reload();
             }, 1000);
         }
@@ -114,13 +112,13 @@ $(document).ready(function () {
         });
     }
 
-    let resultGame = document.querySelector('#result_game');
-    if (resultGame) {
-        if (localStorage.getItem('result') === "true") {
-            document.querySelector('#result_game').innerHTML = 'Вы выиграли';
-        } else {
-            document.querySelector('#result_game').innerHTML = 'Вы проиграли';
-        }
-    }
+    // let resultGame = document.querySelector('#result_game');
+    // if (resultGame) {
+    //     if (localStorage.getItem('result') === "true") {
+    //         document.querySelector('#result_game').innerHTML = 'Вы выиграли';
+    //     } else {
+    //         document.querySelector('#result_game').innerHTML = 'Вы проиграли';
+    //     }
+    // }
 
 });
