@@ -3,6 +3,8 @@ $(document).ready(function () {
     function checkLetter(e, row) {
         let items = document.querySelectorAll('.enter_letters__wrapper__row')[row].querySelectorAll('input');
 
+        alert('govno');
+        
         if (items[0].value === "") {
             items[0].value = e.target.textContent;
         } else if (items[1].value === "") {
