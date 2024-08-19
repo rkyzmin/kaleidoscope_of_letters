@@ -2,49 +2,13 @@
 @section('content')
 
 <div class="enter_letters__wrapper">
-    <div class="enter_letters__wrapper__row">
-        <input style='width: 60px;' type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
+    @for($i = 0; $i < $rows['count']; $i++)
+    <div class="{{ $rows['class'] }}">
+        @for($j = 0; $j < $rows['items']['count']; $j++)
+        <input type="text" readonly style="{{ $rows['items']['style'] }}"/>
+        @endfor
     </div>
-    <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-    </div>
-    <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-    </div>
-    <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-    </div>
-    <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-    </div>
-    <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-        <input type="text" readonly />
-    </div>
-
+    @endfor
 </div>
 
 <div class="words_wrapper">

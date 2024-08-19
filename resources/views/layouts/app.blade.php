@@ -16,11 +16,11 @@
 
 <body>
     <div class="wrapper">
-        <div class="header" style="height: 120px;">
+        <div class="header" style="height: 60px;">
             <a href="{{ route('index') }}"><image id="back" width="30" src="{{ asset('assets/images/icons/back-svgrepo-com.svg') }}"/></a>
         </div>
         @yield('content')
-        <div class="footer"></div>
+        <div class="footer" style="height: 100px;"></div>
     </div>
 
 

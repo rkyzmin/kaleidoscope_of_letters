@@ -13,7 +13,15 @@ class MainController extends Controller
 
     public function game()
     {
-        return view('main.game');
+        $rows = [
+            'class' => 'enter_letters__wrapper__row',
+            'count' => 6,
+            'items' => [
+                'count' => 5,
+                'style' => 'width: 55px;height: 55px;',
+            ],
+        ];
+        return view('main.game', compact('rows'));
     }
 
     public function settings()
