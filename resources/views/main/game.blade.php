@@ -3,7 +3,7 @@
 
 <div class="enter_letters__wrapper">
     <div class="enter_letters__wrapper__row">
-        <input type="text" readonly />
+        <input style='width: 60px;' type="text" readonly />
         <input type="text" readonly />
         <input type="text" readonly />
         <input type="text" readonly />
