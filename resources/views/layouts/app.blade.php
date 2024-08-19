@@ -14,7 +14,7 @@
 
 </head>
 
-<body>
+<body class="background-color: #ffe1a5;">
     <div class="wrapper">
         <div class="header" style="height: 60px;">
             <a href="{{ route('index') }}"><image id="back" width="30" src="{{ asset('assets/images/icons/back-svgrepo-com.svg') }}"/></a>
