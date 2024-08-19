@@ -122,7 +122,7 @@
             } else if (rowId === 5) {
                 setTimeout(() => {
                     window.location.replace("/result");
-                    // localStorage.setItem('result', 'false')
+                    localStorage.setItem('result', 'false')
                     // window.location.reload();
                 }, 1000);
             }
@@ -172,15 +172,6 @@
                 });
             });
         }
-
-        // let resultGame = document.querySelector('#result_game');
-        // if (resultGame) {
-        //     if (localStorage.getItem('result') === "true") {
-        //         document.querySelector('#result_game').innerHTML = 'Вы выиграли';
-        //     } else {
-        //         document.querySelector('#result_game').innerHTML = 'Вы проиграли';
-        //     }
-        // }
     });
 </script>
 @endsection
