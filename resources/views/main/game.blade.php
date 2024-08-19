@@ -28,7 +28,7 @@
         <span>ъ</span>
     </div>
     <div class="words_wrapper__row">
-        <span>хуй</span>
+        <span>ф</span>
         <span>ы</span>
         <span>в</span>
         <span>а</span>
