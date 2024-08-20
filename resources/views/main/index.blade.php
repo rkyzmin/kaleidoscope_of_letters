@@ -21,7 +21,7 @@
             <image width="350" src="{{ asset('assets/images/drunken_duck_Beer_2.svg') }}" />
         </div>
 
-        <a href="{{ route('game') }}"><span id="go_to_game">ИГРАТЬ</span></a>
+        <a href="{{ route('game') }}"><span id="go_to_game">ИГРАТЬ",</a>
     </div>
 </div>
 

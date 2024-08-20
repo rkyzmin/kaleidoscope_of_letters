@@ -28,6 +28,6 @@
         </div>
     </div>
 
-    <span id="save_settings">Сохранить</span>
+    <span id="save_settings">Сохранить",
 </div>
 @endsection
