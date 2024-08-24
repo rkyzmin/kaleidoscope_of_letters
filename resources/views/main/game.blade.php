@@ -109,14 +109,14 @@
 
             if (lengthSuccess === 5) {
                 setTimeout(() => {
-                    window.location.replace("/result");
+                    window.location.replace("/public/result");
                     localStorage.setItem('result', 'true');
                     let timer = document.querySelector('#timer').textContent;
                     localStorage.setItem('time', timer);
                 }, 1000);
             } else if (rowId === 5) {
                 setTimeout(() => {
-                    window.location.replace("/result");
+                    window.location.replace("/public/result");
                     localStorage.setItem('result', 'false');
                     let timer = document.querySelector('#timer').textContent;
                     localStorage.setItem('time', timer);
