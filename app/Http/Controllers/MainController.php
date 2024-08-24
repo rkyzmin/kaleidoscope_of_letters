@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('main.index');
+        $userId = $request->userId ?? null;
+        return view('main.index', compact('userId'));
     }
 
     public function game()
@@ -32,7 +34,7 @@ class MainController extends Controller
                     "ф","ы","в", "а","п","р","о","л","д","ж","э",
                 ],
                 [
-                    "я","ч","с","м","и","т","ь","б","ю",
+                    "я","ч","с","м","и","т","ь","б","ю", "X",
                 ]
             ],
         ];
@@ -51,11 +53,21 @@ class MainController extends Controller
 
     public function settings()
     {
-        return view('main.settings');
+        $userId =  Auth::id();
+        return view('main.settings', compact('userId'));
     }
 
     public function result()
     {
         return view('main.result');
+    }
+    
+    public function saveSettings(Request $request) 
+    {
+        $countWords = $request->count_words;
+        $themes = $request->themes;
+        $isTimer = $request->is_timer;
+
+        dd($countWords, $themes, $isTimer);
     }
 }

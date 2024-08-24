@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+<div>{{ $userId }}</div>
 <div class="settings">
     <div class="settings__background_image">
         <image width="350" src="{{ asset('assets/images/drunken_duck_Beer_2.svg') }}" />
@@ -21,13 +21,31 @@
             <option value="other">Разное</option>
         </select>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="isTimer">
+            <input class="form-check-input" type="checkbox" value="" id="is_timer">
             <label class="form-check-label" for="isTimer">
                 Таймер
             </label>
         </div>
     </div>
 
-    <span id="save_settings">Сохранить",
+    <span id="save_settings">Сохранить</span>
 </div>
+@section('script')
+<script>
+    document.querySelector('#save_settings').addEventListener('click', () => {
+        let countWords = document.querySelector('#count_words').value;
+        let themes = document.querySelector('#themes').value;
+        let isTimer = document.querySelector('#is_timer').checked;
+
+        $.post("{{ route('save_settings') }}", {
+            'count_words': countWords,
+            'themes': themes,
+            'is_timer': isTimer,
+            "_token": "{{ csrf_token() }}",
+        }).then(msg => {
+            window.location.reload();
+        })
+    });
+</script>
+@endsection
 @endsection

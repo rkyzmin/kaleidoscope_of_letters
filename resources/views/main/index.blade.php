@@ -2,6 +2,9 @@
 @section('content')
 
 <div class="wrapper_start_page">
+    @if ($userId)
+    <h1>Тг id: {{ $userId }}</h1>
+    @endif;
     <div class="wrapper_start_page__header">
         <div class="wrapper_start_page__header__items">
             <div class="wrapper_start_page__header__rules">
@@ -21,7 +24,7 @@
             <image width="350" src="{{ asset('assets/images/drunken_duck_Beer_2.svg') }}" />
         </div>
 
-        <a href="{{ route('game') }}"><span id="go_to_game">ИГРАТЬ",</a>
+        <a href="{{ route('game') }}"><span id="go_to_game">ИГРАТЬ</a>
     </div>
 </div>
 

@@ -1,8 +1,9 @@
 <?php
-/** @var SergiX44\Nutgram\Nutgram $bot */
 
-use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
+ /** @var SergiX44\Nutgram\Nutgram $bot */
+use App\Models\InterfaceCommand;
+
+use function PHPUnit\Framework\callback;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +15,4 @@ use SergiX44\Nutgram\Telegram\Attributes\UpdateTypes;
 |
 */
 
-$bot->onCommand('start', function (Nutgram $bot) {
-    $bot->sendGame('kaleidoscope_of_letters_bot');
-
-    // $bot->on('callback_query', function ($query) use($bot) {
-    //     $bot->answerCallbackQuery();
-    // });
-
-    $bot->fallbackOn(UpdateTypes::CALLBACK_QUERY, function (Nutgram $bot) {
-        $bot->answerCallbackQuery([
-            'callback_query_id' => $bot->callbackQuery()->id,
-            'url' => 'https://kaleidoscope-letters.ru/public/index',
-        ]);
-    });
-
-    //return $bot->sendMessage('Hello, world!');
-})->description('The start command!');
+InterfaceCommand::init($bot);

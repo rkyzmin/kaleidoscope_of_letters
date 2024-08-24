@@ -10,6 +10,6 @@ class TelegramController extends Controller
 {
     public function handle(Nutgram $bot)
     {
-        //
+        
     }
 }
