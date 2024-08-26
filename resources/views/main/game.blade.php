@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
 
+<input id="tg_user_id" type="hidden" value="{{ $userId }}" />
 <div class="enter_letters__wrapper">
+    <h1 id="timer" style="font-size: 20px;font-size: 20px;display: table;margin-left: auto;">00:00:00</h1>
     @for($i = 0; $i < $rows['count']; $i++)
         <div class="{{ $rows['class'] }}">
         @for($j = 0; $j
@@ -13,6 +15,7 @@
 </div>
 
 <div class="words_wrapper">
+    
     @for($i = 0; $i <= $letters['count']; $i++)
         <div class="words_wrapper__row">
         @foreach($letters['items'][$i] as $letter)
@@ -29,7 +32,7 @@
         @endforeach
 </div>
 @endfor
-<h1 id="timer">00:00:00</h1>
+
 </div>
 <!--  -->
 @section('script')
@@ -95,7 +98,7 @@
                     }
                 });
 
-                checkResultItems(row);
+                checkResultItems(row, letter);
             }
         }
 
@@ -103,23 +106,28 @@
             return Math.floor(Math.random() * (max - min + 1) + min);
         }
 
-        function checkResultItems(rowId) {
+        function checkResultItems(rowId, letter) {
 
             let lengthSuccess = document.querySelectorAll('.enter_letters__wrapper__row')[rowId].querySelectorAll('.success').length;
+            let tgUserId = document.querySelector('#tg_user_id').value;
+            let time = document.querySelector('#timer').textContent;
+
+            let path = '/public/result';
+            if (window.location.href.indexOf('wordsdev') !== -1) {
+                path = '/result';
+            }
 
             if (lengthSuccess === 5) {
                 setTimeout(() => {
-                    window.location.replace("/public/result");
+                    window.location.replace(`${path}?userId=${tgUserId}&time=${time}&word=${letter}&this=true`);
                     localStorage.setItem('result', 'true');
-                    let timer = document.querySelector('#timer').textContent;
-                    localStorage.setItem('time', timer);
+                    localStorage.setItem('time', time);
                 }, 1000);
             } else if (rowId === 5) {
                 setTimeout(() => {
-                    window.location.replace("/public/result");
+                    window.location.replace(`${path}?userId=${tgUserId}&time=${time}&word=${letter}&this=false`);
                     localStorage.setItem('result', 'false');
-                    let timer = document.querySelector('#timer').textContent;
-                    localStorage.setItem('time', timer);
+                    localStorage.setItem('time', time);
                     // window.location.reload();
                 }, 1000);
             }
@@ -173,12 +181,7 @@
             });
         }
 
-
         let timer = document.getElementById('timer');
-        let startBtn = document.getElementById('startBtn');
-        let pauseBtn = document.getElementById('pauseBtn');
-        let resetBtn = document.getElementById('resetBtn');
-
         let seconds = 0;
         let minutes = 0;
         let hours = 0;
@@ -198,9 +201,6 @@
         }
 
         interval = setInterval(updateTime, 1000);
-        startBtn.disabled = true;
-        pauseBtn.disabled = false;
-        resetBtn.disabled = false;
 
     });
 </script>

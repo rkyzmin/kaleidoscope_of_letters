@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Auth
+class AuthGame
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,6 @@ class Auth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd($request->one);
         return $next($request);
     }
 }

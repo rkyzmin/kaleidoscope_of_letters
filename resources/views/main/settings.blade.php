@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<div>{{ $userId }}</div>
 <div class="settings">
+    <input id="tg_user_id" type="hidden" value="{{ $userId }}" />
     <div class="settings__background_image">
         <image width="350" src="{{ asset('assets/images/drunken_duck_Beer_2.svg') }}" />
     </div>
@@ -14,7 +14,7 @@
         </select>
 
         <label for="themes">Выберите тематику</label>
-        <select id="themes" class="form-select">
+        <select id="theme" class="form-select">
             <option value="all">Все</option>
             <option value="cities">Города</option>
             <option value="animals">Животные</option>
@@ -34,13 +34,15 @@
 <script>
     document.querySelector('#save_settings').addEventListener('click', () => {
         let countWords = document.querySelector('#count_words').value;
-        let themes = document.querySelector('#themes').value;
+        let theme = document.querySelector('#theme').value;
         let isTimer = document.querySelector('#is_timer').checked;
+        let tgUserId = document.querySelector('#tg_user_id').value;
 
         $.post("{{ route('save_settings') }}", {
             'count_words': countWords,
-            'themes': themes,
+            'theme': theme,
             'is_timer': isTimer,
+            'user_id' : tgUserId,
             "_token": "{{ csrf_token() }}",
         }).then(msg => {
             window.location.reload();

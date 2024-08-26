@@ -2,72 +2,127 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
+use App\Helpers\Main;
+use App\Models\Result;
+use App\Models\Settings;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth_tg');
+    }
+
     public function index(Request $request)
     {
-        $userId = $request->userId ?? null;
+        $userId = $request->userId ?? '958559997';
         return view('main.index', compact('userId'));
     }
 
-    public function game()
+    public function game(Request $request)
     {
-        $letters = [
-            'class' => 'words_wrapper__row',
-            'count' => 2,
-            'style' => 
-            'padding: 7px;
-            background-color: gray;
-            border-radius: 5px;
-            margin-right: -1px;
-            cursor: pointer;',
-
-
-            'items' => [
-                [
-                    "й","ц","у","к","е","н","г","ш","щ","з","х","ъ",
-                ],
-                [
-                    "ф","ы","в", "а","п","р","о","л","д","ж","э",
-                ],
-                [
-                    "я","ч","с","м","и","т","ь","б","ю", "X",
-                ]
-            ],
-        ];
-
-        $rows = [
-            'class' => 'enter_letters__wrapper__row',
-            'count' => 6,
-            'items' => [
-                'count' => 5,
-                'style' => 'width: 55px;height: 55px; font-size: 20px; font-weight: 500; text-align: center;',
-            ],
-        ];
-
-        return view('main.game', compact('rows', 'letters'));
+        $userId = $request->userId;
+        $rows = Main::getInputWords();
+        $letters = Main::getLetters();
+        return view('main.game', compact('rows', 'letters', 'userId'));
     }
 
-    public function settings()
+    public function settings(Request $request)
     {
-        $userId =  Auth::id();
+        $userId = $request->userId;
         return view('main.settings', compact('userId'));
     }
 
-    public function result()
+    public function result(Request $request)
     {
-        return view('main.result');
+        $time = $request->time;
+        $word = $request->word;
+        $resultFrom = $request->this;
+        $userId = $request->userId;
+        $resultData = [];
+
+        $user = User::where('telegram_id', $userId)->first();
+
+        if (!$user) {
+            return false;
+        }
+
+        $resultUser = $user->Result;
+        if (!$resultUser) {
+            $result = new Result();
+            $data = [
+                [
+                    'word' => $word,
+                    'time' => $time,
+                    'this' => $resultFrom,
+                ],
+            ];
+
+            $result->user_id = $user->id;
+            $result->data = json_encode($data, JSON_UNESCAPED_UNICODE);
+            $result->save();
+        } else {
+            $data = [
+                'word' => $word,
+                'time' => $time,
+                'this' => $resultFrom,
+            ];
+
+            $dataResult = json_decode($resultUser->data, 1);
+            $dataResult[] = $data;
+            $resultUser->data = $dataResult;
+            $resultUser->save();
+        }
+
+        if ($resultUser) {
+            $resultDataCollect = collect($resultUser->data);
+            $sortByTime = $resultDataCollect->sortBy('time');
+            $sortByTime->values()->all();
+            
+            $resultData = $sortByTime->slice(0, 9);
+            $resultData->all();
+
+            $resultData = $resultData->map(function ($item, $index) {
+                if ($item['this'] === 'true') {
+                    $item['this'] = 'Победа';
+                }
+
+                if ($item['this'] === 'false') {
+                    $item['this'] = 'Проигрыш';
+                }
+            
+                return $item;
+            });
+        }
+
+        return view('main.result', compact('userId', 'resultData'));
     }
-    
-    public function saveSettings(Request $request) 
+
+    public function saveSettings(Request $request)
     {
         $countWords = $request->count_words;
-        $themes = $request->themes;
+        $theme = $request->theme;
         $isTimer = $request->is_timer;
+        $userId = $request->user_id;
 
-        dd($countWords, $themes, $isTimer);
+        $user = User::where('telegram_id', $userId)->first();
+        if (!$user->Settings) {
+            $settings = new Settings();
+            $settings->user_id = $user->id;
+            $settings->count_words = $countWords;
+            $settings->theme = $theme;
+            $settings->is_timer = $isTimer == 'true' ? 1 : 0;
+            $settings->save();
+        } else {
+            $settings = $user->Settings;
+            $settings->count_words = $countWords;
+            $settings->theme = $theme;
+            $settings->is_timer = $isTimer == 'true' ? 1 : 0;
+            $settings->save();
+        }
     }
 }
