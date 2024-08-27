@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 
-<input id="tg_user_id" type="hidden" value="{{ $userId }}" />
 <div class="enter_letters__wrapper">
     <h1 id="timer" style="font-size: 20px;font-size: 20px;display: table;margin-left: auto;">00:00:00</h1>
     @for($i = 0; $i < $rows['count']; $i++)
@@ -109,7 +108,6 @@
         function checkResultItems(rowId, letter) {
 
             let lengthSuccess = document.querySelectorAll('.enter_letters__wrapper__row')[rowId].querySelectorAll('.success').length;
-            let tgUserId = document.querySelector('#tg_user_id').value;
             let time = document.querySelector('#timer').textContent;
 
             let path = '/public/result';
@@ -119,13 +117,13 @@
 
             if (lengthSuccess === 5) {
                 setTimeout(() => {
-                    window.location.replace(`${path}?userId=${tgUserId}&time=${time}&word=${letter}&this=true`);
+                    window.location.replace(`${path}?time=${time}&word=${letter}&this=true`);
                     localStorage.setItem('result', 'true');
                     localStorage.setItem('time', time);
                 }, 1000);
             } else if (rowId === 5) {
                 setTimeout(() => {
-                    window.location.replace(`${path}?userId=${tgUserId}&time=${time}&word=${letter}&this=false`);
+                    window.location.replace(`${path}?time=${time}&word=${letter}&this=false`);
                     localStorage.setItem('result', 'false');
                     localStorage.setItem('time', time);
                     // window.location.reload();

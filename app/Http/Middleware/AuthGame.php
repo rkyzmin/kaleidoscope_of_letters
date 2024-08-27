@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthGame
@@ -15,6 +17,15 @@ class AuthGame
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Auth::attempt(['telegram_id' => $request->userId, 'password' => $request->userId])) {
+            return Response([
+                'status' => 'error',
+                'message' => 'Not authorized',
+            ], 401, [
+                'Content-Type', 'application/json'
+            ]);
+        }
+
         return $next($request);
     }
 }

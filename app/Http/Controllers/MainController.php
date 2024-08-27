@@ -12,29 +12,29 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function __construct()
+    private $user;
+    public function __construct(Request $request)
     {
-        $this->middleware('auth_tg');
+        $this->middleware('auth_game');
+        $this->user = User::where('telegram_id', $request->userId)->first();
     }
 
     public function index(Request $request)
     {
-        $userId = $request->userId ?? '958559997';
+        $userId = $this->user->telegram_id;
         return view('main.index', compact('userId'));
     }
 
     public function game(Request $request)
     {
-        $userId = $request->userId;
         $rows = Main::getInputWords();
         $letters = Main::getLetters();
-        return view('main.game', compact('rows', 'letters', 'userId'));
+        return view('main.game', compact('rows', 'letters'));
     }
 
     public function settings(Request $request)
     {
-        $userId = $request->userId;
-        return view('main.settings', compact('userId'));
+        return view('main.settings');
     }
 
     public function result(Request $request)
@@ -42,16 +42,9 @@ class MainController extends Controller
         $time = $request->time;
         $word = $request->word;
         $resultFrom = $request->this;
-        $userId = $request->userId;
         $resultData = [];
 
-        $user = User::where('telegram_id', $userId)->first();
-
-        if (!$user) {
-            return false;
-        }
-
-        $resultUser = $user->Result;
+        $resultUser = $this->user->Result;
         if (!$resultUser) {
             $result = new Result();
             $data = [
@@ -62,7 +55,7 @@ class MainController extends Controller
                 ],
             ];
 
-            $result->user_id = $user->id;
+            $result->user_id = $this->user->id;
             $result->data = json_encode($data, JSON_UNESCAPED_UNICODE);
             $result->save();
         } else {
@@ -107,18 +100,16 @@ class MainController extends Controller
         $countWords = $request->count_words;
         $theme = $request->theme;
         $isTimer = $request->is_timer;
-        $userId = $request->user_id;
 
-        $user = User::where('telegram_id', $userId)->first();
-        if (!$user->Settings) {
+        if (!$this->user->Settings) {
             $settings = new Settings();
-            $settings->user_id = $user->id;
+            $settings->user_id = $this->user->id;
             $settings->count_words = $countWords;
             $settings->theme = $theme;
             $settings->is_timer = $isTimer == 'true' ? 1 : 0;
             $settings->save();
         } else {
-            $settings = $user->Settings;
+            $settings = $this->user->Settings;
             $settings->count_words = $countWords;
             $settings->theme = $theme;
             $settings->is_timer = $isTimer == 'true' ? 1 : 0;
