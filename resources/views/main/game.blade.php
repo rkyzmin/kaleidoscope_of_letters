@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="enter_letters__wrapper">
-    <h1 id="timer" style="font-size: 20px;font-size: 20px;display: table;margin-left: auto;">00:00:00</h1>
+    <h1 id="timer" style="font-size: 20px;font-size: 20px;display: {{$showTimer}}; margin-left: auto;">00:00:00</h1>
     @for($i = 0; $i < $rows['count']; $i++)
         <div class="{{ $rows['class'] }}">
         @for($j = 0; $j
@@ -14,7 +14,7 @@
 </div>
 
 <div class="words_wrapper">
-    
+
     @for($i = 0; $i <= $letters['count']; $i++)
         <div class="words_wrapper__row">
         @foreach($letters['items'][$i] as $letter)
@@ -109,6 +109,8 @@
 
             let lengthSuccess = document.querySelectorAll('.enter_letters__wrapper__row')[rowId].querySelectorAll('.success').length;
             let time = document.querySelector('#timer').textContent;
+            let params = new URLSearchParams(document.location.search);
+            let tgUserId = params.get('userId');
 
             let path = '/public/result';
             if (window.location.href.indexOf('wordsdev') !== -1) {
@@ -117,16 +119,46 @@
 
             if (lengthSuccess === 5) {
                 setTimeout(() => {
-                    window.location.replace(`${path}?time=${time}&word=${letter}&this=true`);
                     localStorage.setItem('result', 'true');
                     localStorage.setItem('time', time);
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ route('save_result') }}",
+                        data: {
+                            'time': time,
+                            'letter': letter,
+                            'this': 'true',
+                            'user_id': tgUserId,
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(info) {
+                            if (info.result === 'success') {
+                                window.location.replace(`${path}?userId=${tgUserId}`);
+                            }
+                        }
+                    });
                 }, 1000);
             } else if (rowId === 5) {
                 setTimeout(() => {
-                    window.location.replace(`${path}?time=${time}&word=${letter}&this=false`);
                     localStorage.setItem('result', 'false');
                     localStorage.setItem('time', time);
                     // window.location.reload();
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ route('save_result') }}",
+                        data: {
+                            'time': time,
+                            'letter': letter,
+                            'this': 'false',
+                            'user_id': tgUserId,
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(info) {
+                            if (info.result === 'success') {
+                                window.location.replace(`${path}?userId=${tgUserId}`);
+                            }
+                        }
+                    });
                 }, 1000);
             }
         }

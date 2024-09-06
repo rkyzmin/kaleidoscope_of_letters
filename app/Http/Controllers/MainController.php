@@ -29,7 +29,10 @@ class MainController extends Controller
     {
         $rows = Main::getInputWords();
         $letters = Main::getLetters();
-        return view('main.game', compact('rows', 'letters'));
+        $settings = $this->user->Settings;
+        $showTimer = $settings->is_timer === 1 ? 'table' : 'none';
+
+        return view('main.game', compact('rows', 'letters', 'showTimer'));
     }
 
     public function settings(Request $request)
@@ -39,81 +42,34 @@ class MainController extends Controller
 
     public function result(Request $request)
     {
-        $time = $request->time;
-        $word = $request->word;
-        $resultFrom = $request->this;
-        $resultData = [];
-
         $resultUser = $this->user->Result;
+        $userId = $this->user->telegram_id;
+
         if (!$resultUser) {
-            $result = new Result();
-            $data = [
-                [
-                    'word' => $word,
-                    'time' => $time,
-                    'this' => $resultFrom,
-                ],
-            ];
-
-            $result->user_id = $this->user->id;
-            $result->data = json_encode($data, JSON_UNESCAPED_UNICODE);
-            $result->save();
-        } else {
-            $data = [
-                'word' => $word,
-                'time' => $time,
-                'this' => $resultFrom,
-            ];
-
-            $dataResult = json_decode($resultUser->data, 1);
-            $dataResult[] = $data;
-            $resultUser->data = $dataResult;
-            $resultUser->save();
+            return abort(404);
         }
 
-        if ($resultUser) {
-            $resultDataCollect = collect($resultUser->data);
-            $sortByTime = $resultDataCollect->sortBy('time');
-            $sortByTime->values()->all();
-            
-            $resultData = $sortByTime->slice(0, 9);
-            $resultData->all();
+        $resultDataCollect = collect(json_decode($resultUser->data, 1));
+        $sortByTime = $resultDataCollect->sortBy('time');
+        $sortByTime->values()->all();
 
-            $resultData = $resultData->map(function ($item, $index) {
-                if ($item['this'] === 'true') {
-                    $item['this'] = 'Победа';
-                }
+        $resultData = $sortByTime->slice(0, 9);
+        $resultData->all();
 
-                if ($item['this'] === 'false') {
-                    $item['this'] = 'Проигрыш';
-                }
-            
-                return $item;
-            });
-        }
+        //dd($resultData);
 
-        return view('main.result', compact('userId', 'resultData'));
-    }
+        $resultData = $resultData->map(function ($item, $index) {
+            if ($item['this'] === 'true') {
+                $item['this'] = 'Победа';
+            }
 
-    public function saveSettings(Request $request)
-    {
-        $countWords = $request->count_words;
-        $theme = $request->theme;
-        $isTimer = $request->is_timer;
+            if ($item['this'] === 'false') {
+                $item['this'] = 'Проигрыш';
+            }
 
-        if (!$this->user->Settings) {
-            $settings = new Settings();
-            $settings->user_id = $this->user->id;
-            $settings->count_words = $countWords;
-            $settings->theme = $theme;
-            $settings->is_timer = $isTimer == 'true' ? 1 : 0;
-            $settings->save();
-        } else {
-            $settings = $this->user->Settings;
-            $settings->count_words = $countWords;
-            $settings->theme = $theme;
-            $settings->is_timer = $isTimer == 'true' ? 1 : 0;
-            $settings->save();
-        }
+            return $item;
+        });
+
+        return view('main.result', compact('resultData', 'userId'));
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="settings">
-    <input id="tg_user_id" type="hidden" value="{{ $userId }}" />
+    {{-- <input id="tg_user_id" type="hidden" value="{{ $userId }}" /> --}}
     <div class="settings__background_image">
         <image width="350" src="{{ asset('assets/images/drunken_duck_Beer_2.svg') }}" />
     </div>
@@ -21,8 +21,8 @@
             <option value="other">Разное</option>
         </select>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="is_timer">
-            <label class="form-check-label" for="isTimer">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="" id="is_timer">
                 Таймер
             </label>
         </div>
@@ -36,17 +36,24 @@
         let countWords = document.querySelector('#count_words').value;
         let theme = document.querySelector('#theme').value;
         let isTimer = document.querySelector('#is_timer').checked;
-        let tgUserId = document.querySelector('#tg_user_id').value;
 
-        $.post("{{ route('save_settings') }}", {
-            'count_words': countWords,
-            'theme': theme,
-            'is_timer': isTimer,
-            'user_id' : tgUserId,
-            "_token": "{{ csrf_token() }}",
-        }).then(msg => {
-            window.location.reload();
-        })
+        let params = new URLSearchParams(document.location.search);
+        let tgUserId = params.get('userId');
+
+        $.ajax({
+            type: 'post',
+            url: "{{ route('save_settings') }}",
+            data: {
+                'count_words': countWords,
+                'theme': theme,
+                'is_timer': isTimer,
+                'user_id': tgUserId,
+                "_token": "{{ csrf_token() }}",
+            },
+            success: function(info) {
+                console.log(info);
+            }
+        });
     });
 </script>
 @endsection

@@ -6,7 +6,7 @@
     <span id="time"></span>
 
     <image width="350" src="{{ asset('assets/images/icons/dobi.gif') }}" />
-    <a href="{{ route('game', ['userId' => $userId]) }}">
+    <a href="{{ route('game') }}?userId={{ $userId }}">
         <button id="reload_game">Повторить игру</button>
     </a>
     <a href="#table_show" id="show_result">Посмотреть результаты</a>
