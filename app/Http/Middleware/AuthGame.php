@@ -17,7 +17,10 @@ class AuthGame
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::attempt(['telegram_id' => $request->userId, 'password' => $request->userId])) {
+
+        $userId = 958559997; //$request->userId
+
+        if (!Auth::attempt(['telegram_id' =>  $userId, 'password' => $userId])) {
             return Response([
                 'status' => 'error',
                 'message' => 'Not authorized',

@@ -16,7 +16,8 @@ class MainController extends Controller
     public function __construct(Request $request)
     {
         $this->middleware('auth_game');
-        $this->user = User::where('telegram_id', $request->userId)->first();
+        $userId = 958559997; //$request->userId
+        $this->user = User::where('telegram_id', $userId)->first();
     }
 
     public function index(Request $request)
